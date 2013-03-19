@@ -4,7 +4,7 @@
 '* recreating views and breadcrumbs. It also provides a single place that
 '* can take an item and figure out which type of screen should be shown
 '* so that logic doesn't have to be in each individual screen type.
-'*T
+'*
 
 Function createViewController() As Object
     controller = CreateObject("roAssociativeArray")
