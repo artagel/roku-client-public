@@ -43,8 +43,22 @@ Function createBaseMetadata(container, item, thumb=invalid) As Object
         server = GetPlexMediaServer(item@machineIdentifier)
     end if
 
+    ' Get leafCount and viewedLeafCount information in order to calculate number of unwatched episodes
+    if item@leafCount <> invalid then
+    metadata.LeafCount = firstOf(item@leafCount,"0").toInt()
+    metadata.viewedLeafCount = firstOf(item@viewedLeafCount,"0").toInt() 
+    metadata.totalUnwatched = metadata.LeafCount - metadata.viewedLeafCount
+    else 
+    metadata.totalUnwatched = 0
+    end if
+    'Debug("totalUnwatched = "+tostr(metadata.totalUnwatched))
+    if metadata.totalUnwatched > 0 then
+    metadata.Title = firstOf(item@title, item@name)+" ("+tostr(metadata.totalUnwatched)+")"
+    else 
     metadata.Title = firstOf(item@title, item@name)
-
+    end if
+    
+    
     ' There is a *massive* performance problem on grid views if the description
     ' isn't truncated.
     metadata.Description = truncateString(item@summary, 250, invalid)
